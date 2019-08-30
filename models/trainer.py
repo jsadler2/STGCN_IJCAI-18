@@ -87,6 +87,7 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard'):
             print(f'Epoch {i:2d} Training Time {time.time() - start_time:.3f}s')
 
             start_time = time.time()
+            # [jeff] what is the "inference" part of this?
             min_va_val, min_val = \
                 model_inference(sess, pred, inputs, batch_size, n_his, n_pred, step_idx, min_va_val, min_val)
 

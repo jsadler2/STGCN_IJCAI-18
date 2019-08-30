@@ -39,6 +39,7 @@ parser.add_argument('--save', type=int, default=10)
 parser.add_argument('--ks', type=int, default=3)
 # [jeff] I think kt is the number of temporal convolutions
 parser.add_argument('--kt', type=int, default=3)
+# [jeff] lr is learning rate
 parser.add_argument('--lr', type=float, default=1e-3)
 # [jeff] the optimizer
 parser.add_argument('--opt', type=str, default='RMSProp')

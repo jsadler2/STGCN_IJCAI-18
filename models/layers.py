@@ -130,6 +130,7 @@ def spatio_conv_layer(x, Ks, c_in, c_out):
         x_input = x
 
     ws = tf.get_variable(name='ws', shape=[Ks * c_in, c_out], dtype=tf.float32)
+    # [jeff] does the "weight_decay" get used somewhere else in the process?
     tf.add_to_collection(name='weight_decay', value=tf.nn.l2_loss(ws))
     variable_summaries(ws, 'theta')
     bs = tf.get_variable(name='bs', initializer=tf.zeros([c_out]), dtype=tf.float32)
@@ -192,6 +193,8 @@ def output_layer(x, T, scope, act_func='GLU'):
     :param act_func: str, activation function.
     :return: tensor, [batch_size, 1, n_route, 1].
     '''
+    # [jeff] seems like they are doing another 3 convolutions (two temp_conv_layers) and also an convolution by calling
+    # "fully_con_layer". Not sure why they are doing this.
     _, _, n, channel = x.get_shape().as_list()
 
     # maps multi-steps to one.
