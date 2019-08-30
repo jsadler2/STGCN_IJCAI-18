@@ -19,6 +19,7 @@ def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob):
     :param Kt: int, kernel size of temporal convolution.
     :param blocks: list, channel configs of st_conv blocks.
     :param keep_prob: placeholder.
+    :return ?? [jeff]
     '''
     x = inputs[:, 0:n_his, :, :]
 

@@ -20,6 +20,8 @@ def scaled_laplacian(W):
     n, d = np.shape(W)[0], np.sum(W, axis=1)
     # L -> graph Laplacian
     L = -W
+    # don't get why they redefine 'd' here
+    # also don't get why the diag of L is the sum of W cuz the "d" in both definitions is the same
     L[np.diag_indices_from(L)] = d
     for i in range(n):
         for j in range(n):
