@@ -154,11 +154,18 @@ def st_conv_block(x, Ks, Kt, channels, scope, keep_prob, act_func='GLU'):
     :param act_func: str, activation function.
     :return: tensor, [batch_size, time_step, n_route, c_out].
     '''
-    # [jeff] what are the channels?
+    # [jeff] what are the channels? [alison] features, equivalent to color layers in an image convolution.
+    # this article helped me: https://towardsdatascience.com/a-beginners-guide-to-convolutional-neural-networks-cnns-14649dbddce8
+    # i bet there's only one, velocity, in the published application
     # [jeff] from line 57 (and others)
     c_si, c_t, c_oo = channels
 
     # [jeff] what is "variable_scope"?
+    # [alison] a tensorflow thing - it allows you to group variables together in
+    # arbitrary "scopes" (collections, folders) to keep everything organized.
+    # also allows you to have identically named variables nested within differently
+    # named scopes, e.g., 'wt' and 'bt' within each temporal_conv_layer.
+    # see https://www.tensorflow.org/guide/variables#sharing_variables
     with tf.variable_scope(f'stn_block_{scope}_in'):
         x_s = temporal_conv_layer(x, Kt, c_si, c_t, act_func=act_func)
         x_t = spatio_conv_layer(x_s, Ks, c_t, c_t)

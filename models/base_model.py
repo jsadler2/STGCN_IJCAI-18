@@ -26,6 +26,7 @@ def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob):
     # Ko>0: kernel size of temporal convolution in the output layer.
     Ko = n_his
     # ST-Block
+    # [alison] from main.py: blocks = [[1, 32, 64], [64, 32, 128]], bottleneck design, so this loop runs twice (i=0,1)
     for i, channels in enumerate(blocks):
         x = st_conv_block(x, Ks, Kt, channels, i, keep_prob, act_func='GLU')
         Ko -= 2 * (Ks - 1)
@@ -37,6 +38,9 @@ def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob):
         raise ValueError(f'ERROR: kernel size Ko must be greater than 1, but received "{Ko}".')
 
     # [jeff] what is "copy_loss"?
+    # [alison] it's the loss if you used the final observed value as your 
+    # prediction for the following timestep, i.e., assumed that conditions 
+    # won't change at all in 5 minutes. a null model for comparison, I bet
     tf.add_to_collection(name='copy_loss',
                          value=tf.nn.l2_loss(inputs[:, n_his - 1:n_his, :, :] - inputs[:, n_his:n_his + 1, :, :]))
     train_loss = tf.nn.l2_loss(y - inputs[:, n_his:n_his + 1, :, :])

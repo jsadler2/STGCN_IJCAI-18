@@ -30,9 +30,14 @@ parser.add_argument('--n_route', type=int, default=228)
 parser.add_argument('--n_his', type=int, default=12)
 # [jeff] how many future observations predicted
 parser.add_argument('--n_pred', type=int, default=9)
-# [jeff] don't know what "batch_size" means
+# [jeff] don't know what "batch_size" means [alison] a batch is a subset of the
+# training data that are used all together to update the model parameters
+# (weights and biases) exactly once. one extreme would be to use batch_size 1,
+# i.e., update the parameters based on one training example at a time. the other
+# extreme would be batch_size = dataset_size
 parser.add_argument('--batch_size', type=int, default=50)
 # [jeff] don't know what "epoch" means
+# [alison] epoch is one complete training iteration through all of the training data
 parser.add_argument('--epoch', type=int, default=50)
 parser.add_argument('--save', type=int, default=10)
 # [jeff] I think ks is the number of spatial convolutions (this is true see line 18 of "base_model")
@@ -82,6 +87,9 @@ PeMS = data_gen(pjoin('./data_loader/PeMS-M/PeMS-M', data_file), (n_train, n_val
 # I really only understand one of these numbers: 228 - that's the number of sensors. I suppose the first dimension
 # must be the time. but I don't know where/how they got 9112 or 1340. Then I have *no* idea what the 21 is... is that
 # the number of features...?
+# [alison] we figured out last week that there are 12 historical values and 9 future values = 21 values in each
+# temporal sequence. 1 is the number of features (velocity in, velocity out). so 9112 and 1340 are probably
+# numbers of sequences supplied for each phase (training, validation, testing).
 print(f'>> Loading dataset with Mean: {PeMS.mean:.2f}, STD: {PeMS.std:.2f}')
 
 if __name__ == '__main__':
